@@ -159,4 +159,9 @@ const App = () => {
     }
 };
 
-render(createElement(App), document.getElementById('se-installer-react-app'));
+document.addEventListener('DOMContentLoaded', function() {
+    const target = document.getElementById('se-installer-react-app');
+    if (target) {
+        render(createElement(App), target);
+    }
+});
