@@ -86,9 +86,14 @@ class SE_Installation_Wizard {
         wp_enqueue_script(
             'se-installer-script',
             plugin_dir_url( dirname( __FILE__ ) ) . 'assets/js/installer.js',
-            array( 'wp-element', 'wp-i18n', 'wp-api-fetch' ), // wp-element includes React and ReactDOM
+            array( 'wp-element', 'wp-i18n', 'wp-api-fetch', 'wp-hooks' ),
             SMART_EDUCATION_EXAM_QUIZ_VERSION,
             true
+        );
+
+        wp_add_inline_script(
+            'se-installer-script',
+            'document.addEventListener("DOMContentLoaded", function() { if(window.seInstaller) { window.seInstaller.init(); } });'
         );
     }
 

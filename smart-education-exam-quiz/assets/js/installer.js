@@ -13,6 +13,7 @@
         const [template, setTemplate] = useState(null);
         const [jobId, setJobId] = useState(null);
 
+        // ... (All the component definitions remain the same)
         const Welcome = () => (
             createElement('div', { className: 'se-installer-step' },
                 createElement('h1', null, 'Welcome to Smart Education'),
@@ -20,7 +21,6 @@
                 createElement('button', { onClick: () => setStep(2) }, 'Start Setup')
             )
         );
-
         const ModeSelection = () => (
             createElement('div', { className: 'se-installer-step' },
                 createElement('h2', null, 'Choose Your Setup Mode'),
@@ -36,7 +36,6 @@
                 )
             )
         );
-
         const TemplatePicker = () => {
             const [templates, setTemplates] = useState([]);
             const [showPreview, setShowPreview] = useState(false);
@@ -86,7 +85,6 @@
                 showPreview && createElement(Modal, { template: previewTemplate, onClose: () => setShowPreview(false) })
             );
         };
-
         const Settings = () => {
             const [settings, setSettings] = useState({
                 institutionType: 'college',
@@ -118,7 +116,6 @@
                 )
             );
         };
-
         const Progress = () => {
             const [progress, setProgress] = useState(0);
             const [log, setLog] = useState('Starting import...');
@@ -146,7 +143,6 @@
                 createElement('pre', { className: 'se-log-output' }, log)
             );
         };
-
         const Finish = () => (
             createElement('div', { className: 'se-installer-step' },
                 createElement('h2', null, 'Setup Complete!'),
@@ -154,6 +150,7 @@
                 createElement('a', { href: '/wp-admin/edit.php?post_type=se_exam', className: 'button' }, 'Go to Dashboard')
             )
         );
+
 
         switch (step) {
             case 1: return createElement(Welcome);
@@ -166,11 +163,13 @@
         }
     };
 
-    document.addEventListener('DOMContentLoaded', function() {
-        const target = document.getElementById('se-installer-react-app');
-        if (target) {
-            render(createElement(App), target);
+    window.seInstaller = {
+        init: function() {
+            const target = document.getElementById('se-installer-react-app');
+            if (target) {
+                render(createElement(App), target);
+            }
         }
-    });
+    };
 
 })(window.wp);
