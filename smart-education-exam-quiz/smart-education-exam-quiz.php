@@ -52,8 +52,10 @@ require_once SMART_EDUCATION_EXAM_QUIZ_PLUGIN_DIR . 'includes/post-types.php';
 require_once SMART_EDUCATION_EXAM_QUIZ_PLUGIN_DIR . 'includes/class-se-meta-boxes.php';
 require_once SMART_EDUCATION_EXAM_QUIZ_PLUGIN_DIR . 'includes/elementor/elementor.php';
 require_once SMART_EDUCATION_EXAM_QUIZ_PLUGIN_DIR . 'includes/class-se-rest-api.php';
+require_once SMART_EDUCATION_EXAM_QUIZ_PLUGIN_DIR . 'includes/rest/class-se-installer-rest.php';
 require_once SMART_EDUCATION_EXAM_QUIZ_PLUGIN_DIR . 'includes/shortcodes.php';
 require_once SMART_EDUCATION_EXAM_QUIZ_PLUGIN_DIR . 'includes/admin/class-se-admin-menu.php';
+require_once SMART_EDUCATION_EXAM_QUIZ_PLUGIN_DIR . 'includes/admin/class-se-installer.php';
 require_once SMART_EDUCATION_EXAM_QUIZ_PLUGIN_DIR . 'includes/class-se-download-handler.php';
 require_once SMART_EDUCATION_EXAM_QUIZ_PLUGIN_DIR . 'includes/class-se-demo-content.php';
 

@@ -26,6 +26,10 @@ class SE_Activator {
     public static function activate() {
         self::add_roles();
         self::create_database_tables();
+
+        // Set a transient to redirect to the installer.
+        set_transient( 'se_redirect_to_installer', true, 30 );
+
         flush_rewrite_rules();
     }
 

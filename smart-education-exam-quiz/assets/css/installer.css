@@ -1,0 +1,105 @@
+/* Installer Wrapper */
+.wrap {
+    background-color: #f0f2f5;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+#se-installer-react-app {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+    padding: 40px 60px;
+    width: 100%;
+    max-width: 800px;
+    text-align: center;
+}
+
+/* Steps */
+.se-installer-step h1 {
+    font-size: 2.5em;
+    color: #333;
+}
+
+.se-installer-step h2 {
+    font-size: 2em;
+    color: #444;
+    margin-bottom: 30px;
+}
+
+.se-installer-step p {
+    font-size: 1.2em;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+/* Buttons */
+.se-installer-step button {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    cursor: pointer;
+    background-color: #3498db;
+    color: white;
+    transition: background-color 0.2s;
+}
+
+.se-installer-step button.primary {
+    background-color: #27ae60;
+}
+
+.se-installer-step button:hover {
+    opacity: 0.9;
+}
+
+/* Mode & Template Selection Cards */
+.se-mode-selection, .se-template-picker {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.se-mode-card, .se-template-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    width: 250px;
+    cursor: pointer;
+    transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.se-mode-card:hover, .se-template-card:hover {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transform: translateY(-5px);
+}
+
+.se-template-card-actions {
+    margin-top: 20px;
+}
+
+/* Modal */
+.se-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.se-modal {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 600px;
+}
