@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 } else if (question.options) {
                     optionsHtml = '<ul class="se-options">';
                     question.options.forEach((option, i) => {
-                        const isChecked = this.answers[question.id] == i;
+                        const isChecked = this.answers[question.id] === i.toString();
                         optionsHtml += `
                             <li>
                                 <label>

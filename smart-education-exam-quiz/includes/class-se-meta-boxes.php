@@ -240,9 +240,9 @@ class SE_Meta_Boxes {
                 }
             }
             update_post_meta( $post_id, '_se_mcq_options', $mcq_options );
-        } else {
-            // If no options are submitted, delete the meta key.
-            delete_post_meta( $post_id, '_se_mcq_options' );
+        } else if ( isset( $_POST['post_type'] ) && $_POST['post_type'] === 'se_question' ) {
+            // If no options are submitted for a question post, save an empty array.
+            update_post_meta( $post_id, '_se_mcq_options', array() );
         }
     }
 }
