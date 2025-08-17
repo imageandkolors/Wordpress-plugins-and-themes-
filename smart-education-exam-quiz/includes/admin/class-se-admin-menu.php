@@ -46,6 +46,49 @@ class SE_Admin_Menu {
             'se-grading-queue',
             array( __CLASS__, 'render_grading_queue_page' )
         );
+
+        add_submenu_page(
+            'edit.php?post_type=se_exam',
+            __( 'Site Setup', 'smart-education-exam-quiz' ),
+            __( 'Site Setup', 'smart-education-exam-quiz' ),
+            'manage_options',
+            'se-site-setup',
+            array( __CLASS__, 'render_site_setup_page' )
+        );
+    }
+
+    /**
+     * Render the site setup page.
+     *
+     * @since    1.0.0
+     */
+    public static function render_site_setup_page() {
+        if ( isset( $_POST['se_import_demo_content'] ) ) {
+            SE_Demo_Content::import();
+            echo '<div class="updated"><p>Demo content imported successfully!</p></div>';
+        }
+        ?>
+        <div class="wrap">
+            <h1><?php _e( 'Site Setup', 'smart-education-exam-quiz' ); ?></h1>
+            <p><?php _e( 'Use these tools to set up your site with demo content and templates.', 'smart-education-exam-quiz' ); ?></p>
+
+            <h2><?php _e( 'Demo Content', 'smart-education-exam-quiz' ); ?></h2>
+            <form method="post">
+                <p><?php _e( 'Click the button below to import sample exams and questions.', 'smart-education-exam-quiz' ); ?></p>
+                <?php submit_button( __( 'Import Demo Content', 'smart-education-exam-quiz' ), 'primary', 'se_import_demo_content' ); ?>
+            </form>
+
+            <hr>
+
+            <h2><?php _e( 'Elementor Templates', 'smart-education-exam-quiz' ); ?></h2>
+            <p><?php _e( 'Download the template kits below and import them manually via the Elementor > Tools > Import / Export Kit menu.', 'smart-education-exam-quiz' ); ?></p>
+            <ul>
+                <li><a href="<?php echo plugin_dir_url( dirname( __FILE__ ) ) . 'templates/elementor-kits/modern-academic.json'; ?>" download>Modern Academic</a></li>
+                <li><a href="<?php echo plugin_dir_url( dirname( __FILE__ ) ) . 'templates/elementor-kits/creative-learning.json'; ?>" download>Creative Learning</a></li>
+                <li><a href="<?php echo plugin_dir_url( dirname( __FILE__ ) ) . 'templates/elementor-kits/professional-lms.json'; ?>" download>Professional LMS</a></li>
+            </ul>
+        </div>
+        <?php
     }
 
     /**

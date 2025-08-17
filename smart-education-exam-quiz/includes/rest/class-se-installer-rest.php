@@ -78,7 +78,7 @@ class SE_Installer_REST_API {
      *
      * @return bool
      */
-    public function check_permissions() {
+    public static function check_permissions() {
         return current_user_can( 'manage_options' );
     }
 

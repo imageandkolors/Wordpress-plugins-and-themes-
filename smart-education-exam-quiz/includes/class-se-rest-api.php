@@ -54,7 +54,13 @@ class SE_REST_API {
 
         $exam_id = (int) $request['id'];
         $submitted_answers = $request->get_param( 'answers' );
-        $time_spent = $request->get_param( 'time_spent' );
+        $time_spent_raw = $request->get_param( 'time_spent' );
+        $time_spent = array();
+        if ( is_array( $time_spent_raw ) ) {
+            foreach ( $time_spent_raw as $q_id => $time ) {
+                $time_spent[ intval( $q_id ) ] = intval( $time );
+            }
+        }
         $user_id = get_current_user_id();
 
         if ( empty( $submitted_answers ) ) {
