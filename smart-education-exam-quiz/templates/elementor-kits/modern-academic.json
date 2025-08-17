@@ -1,0 +1,33 @@
+{
+    "version": "0.4",
+    "title": "Modern Academic Exam",
+    "type": "page",
+    "content": [
+        {
+            "id": "7a8b9c0d",
+            "elType": "section",
+            "settings": [],
+            "elements": [
+                {
+                    "id": "1a2b3c4d",
+                    "elType": "column",
+                    "settings": {
+                        "_column_size": 100
+                    },
+                    "elements": [
+                        {
+                            "id": "5e6f7g8h",
+                            "elType": "widget",
+                            "widgetType": "se_exam",
+                            "settings": {
+                                "exam_id": "1",
+                                "container_background_color": "#FFFFFF",
+                                "button_background_color": "#3498DB"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

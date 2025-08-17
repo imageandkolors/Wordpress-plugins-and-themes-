@@ -104,6 +104,90 @@ class SE_Exam_Widget extends \Elementor\Widget_Base {
         );
 
         $this->end_controls_section();
+
+        // Style Tab
+        $this->start_controls_section(
+            'style_section',
+            [
+                'label' => __( 'Style', 'smart-education-exam-quiz' ),
+                'tab' => \Elementor\Controls_Manager::TAB_STYLE,
+            ]
+        );
+
+        // Container Styles
+        $this->add_control(
+            'container_heading',
+            [
+                'label' => __( 'Container', 'smart-education-exam-quiz' ),
+                'type' => \Elementor\Controls_Manager::HEADING,
+                'separator' => 'before',
+            ]
+        );
+
+        $this->add_control(
+            'container_background_color',
+            [
+                'label' => __( 'Background Color', 'smart-education-exam-quiz' ),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .se-exam-container' => 'background-color: {{VALUE}}',
+                ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'container_padding',
+            [
+                'label' => __( 'Padding', 'smart-education-exam-quiz' ),
+                'type' => \Elementor\Controls_Manager::DIMENSIONS,
+                'size_units' => [ 'px', '%', 'em' ],
+                'selectors' => [
+                    '{{WRAPPER}} .se-exam-container' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        // Button Styles
+        $this->add_control(
+            'button_heading',
+            [
+                'label' => __( 'Buttons', 'smart-education-exam-quiz' ),
+                'type' => \Elementor\Controls_Manager::HEADING,
+                'separator' => 'before',
+            ]
+        );
+
+        $this->add_group_control(
+            \Elementor\Group_Control_Typography::get_type(),
+            [
+                'name' => 'button_typography',
+                'selector' => '{{WRAPPER}} .se-exam-footer button',
+            ]
+        );
+
+        $this->add_control(
+            'button_background_color',
+            [
+                'label' => __( 'Background Color', 'smart-education-exam-quiz' ),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .se-exam-footer button' => 'background-color: {{VALUE}}',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'button_text_color',
+            [
+                'label' => __( 'Text Color', 'smart-education-exam-quiz' ),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .se-exam-footer button' => 'color: {{VALUE}}',
+                ],
+            ]
+        );
+
+        $this->end_controls_section();
     }
 
     /**
@@ -136,7 +220,6 @@ class SE_Exam_Widget extends \Elementor\Widget_Base {
                 $question_post = get_post( $question_id );
                 if ( $question_post ) {
                     $options = get_post_meta( $question_id, '_se_mcq_options', true );
-                    // Remove correct answer flag from options before sending to frontend.
                     $frontend_options = array();
                     if ( ! empty( $options ) ) {
                         foreach ( $options as $option ) {
@@ -144,10 +227,14 @@ class SE_Exam_Widget extends \Elementor\Widget_Base {
                         }
                     }
 
+                    $terms = get_the_terms( $question_id, 'se_question_type' );
+                    $type = ! empty( $terms ) ? $terms[0]->slug : 'mcq';
+
                     $questions[] = array(
                         'id'      => $question_id,
                         'title'   => $question_post->post_title,
                         'content' => $question_post->post_content,
+                        'type'    => $type,
                         'timer'   => get_post_meta( $question_id, '_se_question_timer', true ),
                         'options' => $frontend_options,
                     );
@@ -161,8 +248,19 @@ class SE_Exam_Widget extends \Elementor\Widget_Base {
             'duration'  => get_post_meta( $exam_id, '_se_exam_duration', true ),
             'questions' => $questions,
         );
+
+        $this->add_render_attribute( 'container', 'class', 'se-exam-container' );
+        $this->add_render_attribute( 'container', 'id', 'se-exam-container-' . esc_attr( $this->get_id() ) );
+
         ?>
-        <div id="se-exam-container-<?php echo esc_attr( $this->get_id() ); ?>" class="se-exam-container"></div>
+        <div <?php echo $this->get_render_attribute_string( 'container' ); ?>>
+            <div class="se-exam-intro">
+                <h2><?php echo esc_html( $exam_post->post_title ); ?></h2>
+                <p><?php printf( __( 'Duration: %d minutes', 'smart-education-exam-quiz' ), get_post_meta( $exam_id, '_se_exam_duration', true ) ); ?></p>
+                <p><?php printf( __( 'Number of questions: %d', 'smart-education-exam-quiz' ), count( $questions ) ); ?></p>
+                <button class="se-start-exam-btn"><?php _e( 'Start Exam', 'smart-education-exam-quiz' ); ?></button>
+            </div>
+        </div>
         <script>
             window.se_exam_data_<?php echo esc_attr( $this->get_id() ); ?> = <?php echo json_encode( $exam_data ); ?>;
         </script>

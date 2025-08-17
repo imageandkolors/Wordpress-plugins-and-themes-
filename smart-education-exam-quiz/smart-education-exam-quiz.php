@@ -51,6 +51,12 @@ register_deactivation_hook( __FILE__, 'deactivate_smart_education_exam_quiz' );
 require_once SMART_EDUCATION_EXAM_QUIZ_PLUGIN_DIR . 'includes/post-types.php';
 require_once SMART_EDUCATION_EXAM_QUIZ_PLUGIN_DIR . 'includes/class-se-meta-boxes.php';
 require_once SMART_EDUCATION_EXAM_QUIZ_PLUGIN_DIR . 'includes/elementor/elementor.php';
+require_once SMART_EDUCATION_EXAM_QUIZ_PLUGIN_DIR . 'includes/class-se-rest-api.php';
+require_once SMART_EDUCATION_EXAM_QUIZ_PLUGIN_DIR . 'includes/shortcodes.php';
+require_once SMART_EDUCATION_EXAM_QUIZ_PLUGIN_DIR . 'includes/admin/class-se-admin-menu.php';
+require_once SMART_EDUCATION_EXAM_QUIZ_PLUGIN_DIR . 'includes/class-se-download-handler.php';
+require_once SMART_EDUCATION_EXAM_QUIZ_PLUGIN_DIR . 'includes/class-se-demo-content.php';
+
 
 /**
  * Enqueue frontend scripts and styles.
@@ -66,9 +72,19 @@ function se_enqueue_frontend_assets() {
     wp_register_script(
         'se-frontend-script',
         plugin_dir_url( __FILE__ ) . 'assets/js/frontend.js',
-        array(),
+        array( 'wp-api-fetch' ), // Add wp-api-fetch as a dependency
         SMART_EDUCATION_EXAM_QUIZ_VERSION,
         true
+    );
+
+    // Pass the REST API URL and nonce to the script
+    wp_localize_script(
+        'se-frontend-script',
+        'se_exam_ajax',
+        array(
+            'root'  => esc_url_raw( rest_url() ),
+            'nonce' => wp_create_nonce( 'wp_rest' ),
+        )
     );
 }
 add_action( 'wp_enqueue_scripts', 'se_enqueue_frontend_assets' );
