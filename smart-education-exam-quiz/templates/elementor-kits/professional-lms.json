@@ -2,6 +2,7 @@
     "version": "0.4",
     "title": "Professional LMS Exam",
     "type": "page",
+    "page_settings": [],
     "content": [
         {
             "id": "9a0b1c2d",
@@ -11,6 +12,7 @@
                 {
                     "id": "3a4b5c6d",
                     "elType": "column",
+                    "isInner": false,
                     "settings": {
                         "_column_size": 100
                     },
@@ -28,7 +30,8 @@
                         }
                     ]
                 }
-            ]
+            ],
+            "isInner": false
         }
     ]
 }

@@ -2,6 +2,7 @@
     "version": "0.4",
     "title": "Creative Learning Exam",
     "type": "page",
+    "page_settings": [],
     "content": [
         {
             "id": "8a9b0c1d",
@@ -11,6 +12,7 @@
                 {
                     "id": "2a3b4c5d",
                     "elType": "column",
+                    "isInner": false,
                     "settings": {
                         "_column_size": 100
                     },
@@ -28,7 +30,8 @@
                         }
                     ]
                 }
-            ]
+            ],
+            "isInner": false
         }
     ]
 }

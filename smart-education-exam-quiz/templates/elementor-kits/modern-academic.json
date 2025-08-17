@@ -2,6 +2,7 @@
     "version": "0.4",
     "title": "Modern Academic Exam",
     "type": "page",
+    "page_settings": [],
     "content": [
         {
             "id": "7a8b9c0d",
@@ -11,6 +12,7 @@
                 {
                     "id": "1a2b3c4d",
                     "elType": "column",
+                    "isInner": false,
                     "settings": {
                         "_column_size": 100
                     },
@@ -27,7 +29,8 @@
                         }
                     ]
                 }
-            ]
+            ],
+            "isInner": false
         }
     ]
 }
