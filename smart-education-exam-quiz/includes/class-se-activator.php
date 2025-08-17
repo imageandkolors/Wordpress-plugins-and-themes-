@@ -26,11 +26,38 @@ class SE_Activator {
     public static function activate() {
         self::add_roles();
         self::create_database_tables();
-
-        // Set a transient to redirect to the installer.
-        set_transient( 'se_redirect_to_installer', true, 30 );
+        self::setup_pages();
+        SE_Demo_Content::import();
 
         flush_rewrite_rules();
+    }
+
+    /**
+     * Create the necessary pages for the plugin.
+     */
+    public static function setup_pages() {
+        $pages = [
+            'exams' => [
+                'title' => 'Exams',
+                'content' => '<!-- This page will display a list of exams. The functionality is not yet implemented. -->',
+            ],
+            'my-results' => [
+                'title' => 'My Results',
+                'content' => '[se_student_report]',
+            ],
+        ];
+
+        foreach ( $pages as $slug => $page ) {
+            if ( ! get_page_by_path( $slug ) ) {
+                wp_insert_post([
+                    'post_name' => $slug,
+                    'post_title' => $page['title'],
+                    'post_content' => $page['content'],
+                    'post_status' => 'publish',
+                    'post_type' => 'page',
+                ]);
+            }
+        }
     }
 
     /**
