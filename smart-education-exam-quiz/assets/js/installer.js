@@ -165,7 +165,7 @@
 
     window.seInstaller = {
         init: function() {
-            const target = document.getElementById('se-installer-react-app');
+            const target = document.getElementById('se-installer-root');
             if (target) {
                 render(createElement(App), target);
             }

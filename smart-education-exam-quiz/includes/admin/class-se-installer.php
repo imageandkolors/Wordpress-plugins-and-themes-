@@ -105,7 +105,7 @@ class SE_Installation_Wizard {
     public static function render_installer_page() {
         ?>
         <div class="wrap">
-            <div id="se-installer-react-app">
+            <div id="se-installer-root">
                 <noscript>
                     <p><?php _e( 'This installer requires JavaScript to run.', 'smart-education-exam-quiz' ); ?></p>
                 </noscript>
