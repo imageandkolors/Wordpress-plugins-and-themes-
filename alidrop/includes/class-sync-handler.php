@@ -25,13 +25,14 @@ class AliDrop_Sync_Handler {
         set_transient( 'alidrop_sync_status', 'running', 300 );
 
         $api_key = get_option( 'alidrop_api_key' );
-        if ( empty( $api_key ) ) {
+        $api_secret = get_option( 'alidrop_api_secret' );
+        if ( empty( $api_key ) || empty( $api_secret ) ) {
             delete_transient( 'alidrop_sync_status' );
-            AliDrop_Logger::log( 'error', 'sync', 'Sync failed: API key is not set.' );
-            return array( 'success' => false, 'message' => __( 'API key is not set.', 'alidrop' ) );
+            AliDrop_Logger::log( 'error', 'sync', 'Sync failed: API key or secret is not set.' );
+            return array( 'success' => false, 'message' => __( 'API key or secret is not set.', 'alidrop' ) );
         }
 
-        $api = new AliDrop_AliExpress_API( $api_key );
+        $api = new AliDrop_AliExpress_API( $api_key, $api_secret );
         $stats = array( 'synced' => 0, 'failed' => 0, 'skipped' => 0 );
 
         $query = new WC_Product_Query( array( 'limit' => -1, 'meta_key' => '_alidrop_product_id', 'return' => 'ids' ) );
@@ -112,11 +113,12 @@ class AliDrop_Sync_Handler {
 
         AliDrop_Logger::log( 'info', 'sync', 'Retry sync process started for ' . count( $queue ) . ' products.' );
         $api_key = get_option( 'alidrop_api_key' );
-        if ( empty( $api_key ) ) {
-            AliDrop_Logger::log( 'error', 'sync', 'Retry sync failed: API key is not set.' );
+        $api_secret = get_option( 'alidrop_api_secret' );
+        if ( empty( $api_key ) || empty( $api_secret ) ) {
+            AliDrop_Logger::log( 'error', 'sync', 'Retry sync failed: API key or secret is not set.' );
             return;
         }
-        $api = new AliDrop_AliExpress_API( $api_key );
+        $api = new AliDrop_AliExpress_API( $api_key, $api_secret );
         $stats = array( 'synced' => 0, 'failed' => 0, 'skipped' => 0 );
 
         $products_to_process = array_slice( $queue, 0, 5 ); // Process 5 at a time

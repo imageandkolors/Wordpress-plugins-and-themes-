@@ -94,19 +94,21 @@ class AliDrop_Admin_Menu {
         $search_results = array();
         $api_key = get_option( 'alidrop_api_key' );
         if ( ! empty( $_GET['s'] ) ) {
-            if ( empty( $api_key ) ) {
-                echo '<div class="notice notice-error is-dismissible"><p>' . esc_html__( 'Please enter your AliExpress API key in the API Settings tab to search for products.', 'alidrop' ) . '</p></div>';
+            $api_secret = get_option( 'alidrop_api_secret' );
+            if ( empty( $api_key ) || empty( $api_secret ) ) {
+                echo '<div class="notice notice-error is-dismissible"><p>' . esc_html__( 'Please enter your AliExpress API key and secret in the API Settings tab to search for products.', 'alidrop' ) . '</p></div>';
             } else {
-                $api = new AliDrop_AliExpress_API( $api_key );
+                $api = new AliDrop_AliExpress_API( $api_key, $api_secret );
                 $search_results = $api->search_products( sanitize_text_field( $_GET['s'] ) );
             }
         }
         if ( isset( $_POST['import_product_id'] ) && check_admin_referer( 'alidrop_import_product_' . $_POST['import_product_id'] ) ) {
             $product_id_to_import = sanitize_text_field( $_POST['import_product_id'] );
-            if ( empty( $api_key ) ) {
-                echo '<div class="notice notice-error is-dismissible"><p>' . esc_html__( 'API key is missing.', 'alidrop' ) . '</p></div>';
+            $api_secret = get_option( 'alidrop_api_secret' );
+            if ( empty( $api_key ) || empty( $api_secret ) ) {
+                echo '<div class="notice notice-error is-dismissible"><p>' . esc_html__( 'API key or secret is missing.', 'alidrop' ) . '</p></div>';
             } else {
-                $api = new AliDrop_AliExpress_API( $api_key );
+                $api = new AliDrop_AliExpress_API( $api_key, $api_secret );
                 $product_data = $api->get_product_details( $product_id_to_import );
                 if ( is_wp_error( $product_data ) ) {
                     echo '<div class="notice notice-error is-dismissible"><p>' . esc_html( $product_data->get_error_message() ) . '</p></div>';
@@ -130,8 +132,10 @@ class AliDrop_Admin_Menu {
      */
     public function register_settings() {
         register_setting( 'alidrop_api_settings', 'alidrop_api_key', array( 'sanitize_callback' => 'sanitize_text_field' ) );
+        register_setting( 'alidrop_api_settings', 'alidrop_api_secret', array( 'sanitize_callback' => 'sanitize_text_field' ) );
         add_settings_section( 'alidrop_api_section', 'API Credentials', null, 'alidrop_api_settings' );
         add_settings_field( 'alidrop_api_key', 'API Key', array( $this, 'render_api_key_field' ), 'alidrop_api_settings', 'alidrop_api_section' );
+        add_settings_field( 'alidrop_api_secret', 'API Secret', array( $this, 'render_api_secret_field' ), 'alidrop_api_settings', 'alidrop_api_section' );
 
         add_settings_section( 'alidrop_sync_section', 'Synchronization Settings', null, 'alidrop_sync_settings' );
         register_setting( 'alidrop_sync_settings', 'alidrop_autosync_enabled', array( 'sanitize_callback' => 'sanitize_text_field' ) );
@@ -157,6 +161,11 @@ class AliDrop_Admin_Menu {
             echo '<p class="description">' . sprintf( esc_html__( 'Your API key is %s.', 'alidrop' ), '<code>' . esc_html( $masked_key ) . '</code>' ) . '</p>';
             echo '<p><a href="' . esc_url( $disconnect_url ) . '" class="button button-secondary">' . esc_html__( 'Disconnect', 'alidrop' ) . '</a></p>';
         }
+    }
+    public function render_api_secret_field() {
+        $api_secret = get_option( 'alidrop_api_secret' );
+        echo '<input type="password" name="alidrop_api_secret" value="' . esc_attr( $api_secret ) . '" class="regular-text">';
+        echo $this->get_tooltip_html(__( 'Enter your API secret from your AliExpress developer account.', 'alidrop' ));
     }
     public function render_autosync_enabled_field() {
         $option = get_option( 'alidrop_autosync_enabled' );

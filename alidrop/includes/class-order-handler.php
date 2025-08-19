@@ -53,14 +53,15 @@ class AliDrop_Order_Handler {
         $order_data = apply_filters( 'alisync_before_order_push_data', $order_data, $order );
 
         $api_key = get_option( 'alidrop_api_key' );
-        if ( empty( $api_key ) ) {
-            $error_msg = __( 'Could not push order to AliExpress. API key is not set.', 'alidrop' );
+        $api_secret = get_option( 'alidrop_api_secret' );
+        if ( empty( $api_key ) || empty( $api_secret ) ) {
+            $error_msg = __( 'Could not push order to AliExpress. API key or secret is not set.', 'alidrop' );
             $order->add_order_note( 'AliDrop: ' . $error_msg );
-            AliDrop_Logger::log( 'error', 'order', "Order push for #$order_id failed: API key not set." );
+            AliDrop_Logger::log( 'error', 'order', "Order push for #$order_id failed: API key or secret not set." );
             return;
         }
 
-        $api = new AliDrop_AliExpress_API( $api_key );
+        $api = new AliDrop_AliExpress_API( $api_key, $api_secret );
         $result = $api->push_order( $order_data );
 
         if ( is_wp_error( $result ) ) {
